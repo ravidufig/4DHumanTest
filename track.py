@@ -10,6 +10,7 @@ import numpy as np
 import cv2  # Added for saving video
 from hydra.core.config_store import ConfigStore
 from omegaconf import DictConfig
+from IPython.display import HTML  # For displaying video in Jupyter/Colab
 
 from phalp.configs.base import FullConfig
 from phalp.models.hmar.hmr import HMR2018Predictor
@@ -149,8 +150,7 @@ class HMR2_4dhuman(PHALP):
         )
     
     def track(self):
-        # Assuming this method processes video frames for tracking.
-        input_video = 'example_data/videos/gymnasts.mp4'
+        input_video = 'example_data/videos/gymnasts1.mp4'
         output_video = 'outputs/PHALP_gymnasts.mp4'
 
         # Open the input video
@@ -191,6 +191,18 @@ class HMR2_4dhuman(PHALP):
 
         print(f"Video saved at {output_video}")
 
+        # Display the output video
+        display(show_local_mp4_video(output_video))
+
+def show_local_mp4_video(file_name, width=640, height=480):
+    import io
+    import base64
+    from IPython.display import HTML
+    video_encoded = base64.b64encode(io.open(file_name, 'rb').read())
+    return HTML(data='''<video width="{0}" height="{1}" alt="test" controls>
+                        <source src="data:video/mp4;base64,{2}" type="video/mp4" />
+                        </video>'''.format(width, height, video_encoded.decode('ascii')))
+
 @dataclass
 class Human4DConfig(FullConfig):
     expand_bbox_shape: Optional[Tuple[int]] = (192,256)
@@ -209,6 +221,7 @@ def main(cfg: DictConfig) -> Optional[float]:
 
 if __name__ == "__main__":
     main()
+
 
 
 """import warnings
