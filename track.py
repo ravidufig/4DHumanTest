@@ -150,7 +150,7 @@ class HMR2_4dhuman(PHALP):
         )
     
     def track(self):
-        input_video = 'example_data/videos/gymnasts1.mp4'
+        input_video = 'example_data/videos/gymnasts.mp4'
         output_video = 'outputs/PHALP_gymnasts.mp4'
 
         # Open the input video
